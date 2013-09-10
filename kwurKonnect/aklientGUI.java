@@ -152,12 +152,6 @@ PropertyChangeListener{
 		btnKonnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				btnKonnect.setEnabled(false);
-		        //Instances of javax.swing.SwingWorker are not reusuable, so
-		        //we create new instances as needed.
-		        task = new Task();
-		        task.addPropertyChangeListener(this);
-		        task.execute();
-
 			}
 		});
 

@@ -90,7 +90,7 @@ public class klientGUI{
 
 		frmKwurkonnectV = new JFrame();
 		frmKwurkonnectV.setTitle("kwurKonnect v0.1");
-		frmKwurkonnectV.setBounds(100, 100, 450, 300);
+		frmKwurkonnectV.setBounds(100, 100, 497, 329);
 		frmKwurkonnectV.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmKwurkonnectV.getContentPane().setLayout(null);
 
@@ -112,8 +112,9 @@ public class klientGUI{
 		frmKwurkonnectV.getContentPane().add(passwordHiddenField);
 
 
-		final JCheckBox chckbxLaunchKreditTracker = new JCheckBox("Launch kredit tracker");
-		chckbxLaunchKreditTracker.setBounds(113, 126, 175, 23);
+		chckbxLaunchKreditTracker = new JCheckBox("Launch kredit tracker");
+		chckbxLaunchKreditTracker.setBounds(113, 135, 175, 23);
+		chckbxLaunchKreditTracker.setSelected(true);
 		frmKwurkonnectV.getContentPane().add(chckbxLaunchKreditTracker);
 
 
@@ -135,7 +136,7 @@ public class klientGUI{
 		frmKwurkonnectV.getContentPane().add(lblPassword);
 
 		JProgressBar progressBar = new JProgressBar(0,100);
-		progressBar.setBounds(35, 183, 380, 16);
+		progressBar.setBounds(35, 183, 415, 16);
 		frmKwurkonnectV.getContentPane().add(progressBar);
 		progressBar.setStringPainted(true); 
 
@@ -144,7 +145,7 @@ public class klientGUI{
 		frmKwurkonnectV.getContentPane().add(lblStatus);
 
 		JButton btnKonnect = new JButton("Konnect");
-		btnKonnect.setBounds(287, 123, 128, 29);
+		btnKonnect.setBounds(322, 46, 128, 29);
 		frmKwurkonnectV.getContentPane().add(btnKonnect);
 		btnKonnect.addActionListener(new btnKonnectAction());
 
@@ -158,25 +159,25 @@ public class klientGUI{
 
 		final JCheckBox chckbxHideConsole = new JCheckBox("Hide console");
 		chckbxHideConsole.setSelected(true);
-		chckbxHideConsole.setBounds(287, 198, 128, 23);
+		chckbxHideConsole.setBounds(322, 200, 128, 23);
 		frmKwurkonnectV.getContentPane().add(chckbxHideConsole);
 		chckbxHideConsole.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (chckbxHideConsole.isSelected()){
 					console.setVisible(false);
-					frmKwurkonnectV.setBounds(frmKwurkonnectV.getX(), frmKwurkonnectV.getY(), 450, 300);
+					frmKwurkonnectV.setBounds(frmKwurkonnectV.getX(), frmKwurkonnectV.getY(), frmKwurkonnectV.getWidth(), 300);
 				}
 
 				else{
 					console.setVisible(true);
-					frmKwurkonnectV.setBounds(frmKwurkonnectV.getX(), frmKwurkonnectV.getY(), 450, 400);
+					frmKwurkonnectV.setBounds(frmKwurkonnectV.getX(), frmKwurkonnectV.getY(), frmKwurkonnectV.getWidth(), 400);
 				}
 
 			}
 		});
 
 		final JCheckBox chckbxHidePassword = new JCheckBox("Hide password");
-		chckbxHidePassword.setBounds(287, 88, 128, 23);
+		chckbxHidePassword.setBounds(294, 89, 128, 23);
 		chckbxHidePassword.setSelected(true);
 		frmKwurkonnectV.getContentPane().add(chckbxHidePassword);
 		chckbxHidePassword.addActionListener(new ActionListener() {
@@ -225,7 +226,6 @@ public class klientGUI{
 	
 	public static class btnKonnectAction implements ActionListener{
 		public void actionPerformed (ActionEvent e){
-			new Thread(new thread1()).start(); //Start the thread
 			String pass = new String("");
 			String username = new String(usernameField.getText());
 			if(usernameField.getText().contains("@kwurmail.wustl.edu"))
@@ -237,21 +237,22 @@ public class klientGUI{
 				pass = new String(passwordHiddenField.getPassword());
 
 			klient klientConnect = new klient(username, pass);
-			if(pass.equals("")){
-				JOptionPane.showMessageDialog(frmKwurkonnectV.getContentPane(),
-						"No password entered!", "You shall not pass!",
-						JOptionPane.WARNING_MESSAGE);
-			}
 			if(username.equals("")){
 				JOptionPane.showMessageDialog(frmKwurkonnectV.getContentPane(),
 						"No username entered!", "You shall not pass!",
 						JOptionPane.WARNING_MESSAGE);
 			}
+			if(pass.equals("")){
+				JOptionPane.showMessageDialog(frmKwurkonnectV.getContentPane(),
+						"No password entered!", "You shall not pass!",
+						JOptionPane.WARNING_MESSAGE);
+			}
 			else{
 				try {
+					consoleOutPt = "";
 					klientConnect.runKonnect();
 					if(chckbxLaunchKreditTracker.isSelected()){
-						String url = "http://localhost:4600/ctracker";
+						String url = "http://localhost:4600/ctracker/";
 						try {
 							java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 						} catch (IOException e1) {
@@ -267,17 +268,7 @@ public class klientGUI{
 		}
 	}
 	
-	//The thread
-		public static class thread1 implements Runnable{
-			public void run(){
-				for (int i=0; i<=100; i++){ //Progressively increment variable i
-					progressBar.setValue(i); //Set value
-					progressBar.repaint(); //Refresh graphics
-					try{Thread.sleep(50);} //Sleep 50 milliseconds
-					catch (InterruptedException err){}
-				}
-			}
-		}
+
 	
 	
 }
